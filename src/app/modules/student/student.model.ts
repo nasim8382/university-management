@@ -1,13 +1,17 @@
 import { Schema, model } from "mongoose";
 // import validator from "validator";
 import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  StudentModel,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  TUserName,
 } from "./student.interface";
+import bcrypt from "bcrypt";
+import config from "../../config";
+import { number } from "joi";
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     // required: [true, "First Name is required"],
@@ -36,7 +40,7 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
   fatherName: {
     type: String,
     // required: [true, "Father's Name is required"],
@@ -69,7 +73,7 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<TLocalGuardian>({
   name: {
     type: String,
     // required: [true, "Local Guardian's Name is required"],
@@ -92,7 +96,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
     type: String,
     // required: true,
@@ -100,6 +104,7 @@ const studentSchema = new Schema<Student>({
     // message: "Student ID is required",
     // trim: true,
   },
+  password: { type: String },
   name: {
     type: userNameSchema,
     // required: [true, "Student name is required"],
@@ -168,4 +173,34 @@ const studentSchema = new Schema<Student>({
   },
 });
 
-export const StudentModel = model<Student>("Student", studentSchema);
+// pre save middleware / hook : will work on create() save()
+studentSchema.pre("save", async function (next) {
+  // console.log(this, "pre hook: we will save data");
+  const user = this;
+
+  // hashing password an save into DB
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+// post save middleware / hook
+studentSchema.post("save", function () {
+  console.log(this, "post hook: we saved our data");
+});
+
+// creating a custom instance method
+// studentSchema.methods.isStudentExits = async function (id) {
+//   const existingStudent = await Student.findOne({ id });
+//   return existingStudent;
+// };
+
+// crating a custom static method
+studentSchema.statics.isStudentExits = async function (id) {
+  const existingStudent = await Student.findOne({ id });
+  return existingStudent;
+};
+
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
