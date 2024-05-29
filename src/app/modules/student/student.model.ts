@@ -105,6 +105,12 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       // message: "Student ID is required",
       // trim: true,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, "User Id is required"],
+      unique: true,
+      ref: "User",
+    },
     password: { type: String },
     name: {
       type: userNameSchema,
@@ -167,11 +173,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       // required: [true, "Local guardian information is required"],
     },
     profileImg: { type: String, trim: true },
-    isActive: {
-      type: String,
-      enum: ["active", "blocked"],
-      default: "active",
-    },
     isDeleted: {
       type: Boolean,
       default: false,
