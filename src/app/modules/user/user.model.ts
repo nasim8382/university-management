@@ -5,15 +5,12 @@ const userSchema = new Schema<IUser>(
   {
     id: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
-      required: true,
     },
     needsPasswordChange: {
       type: Boolean,
-      default: true,
     },
     role: {
       type: String,
@@ -25,7 +22,6 @@ const userSchema = new Schema<IUser>(
     },
     isDeleted: {
       type: Boolean,
-      default: false,
     },
   },
   {
