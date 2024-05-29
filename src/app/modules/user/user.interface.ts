@@ -1,8 +1,8 @@
 export interface IUser {
-  id: String;
-  password: String;
+  id: string;
+  password: string;
   needsPasswordChange: boolean;
   role: "student" | "faculty" | "admin";
   status: "in-progress" | "blocked";
-  isDeleted: Boolean;
+  isDeleted: boolean;
 }
