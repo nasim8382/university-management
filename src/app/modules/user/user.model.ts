@@ -8,10 +8,12 @@ const userSchema = new Schema<IUser>(
     id: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
+      minlength: [8, "Must be more than 8 characters"],
     },
     needsPasswordChange: {
       type: Boolean,
