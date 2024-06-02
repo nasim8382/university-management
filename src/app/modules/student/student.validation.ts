@@ -51,41 +51,48 @@ const localGuardianValidationSchema = z.object({
 });
 
 // Student Schema
-const studentValidationSchema = z.object({
-  id: z.string().trim().min(1, "Student ID is required"),
-  password: z
-    .string()
-    .trim()
-    .min(1, "Password is required")
-    .max(20, "Password can not be more than 20 characters"),
-  name: userNameValidationSchema,
-  gender: z.enum(["male", "female"], {
-    errorMap: () => ({ message: "{VALUE} is not valid" }),
+const createStudentValidationSchema = z.object({
+  body: z.object({
+    password: z
+      .string()
+      .trim()
+      .min(8, { message: "Password must be 8 or more characters long" })
+      .max(20, "Password can not be more than 20 characters"),
+    student: z.object({
+      name: userNameValidationSchema,
+      gender: z.enum(["male", "female"], {
+        errorMap: () => ({ message: "{VALUE} is not valid" }),
+      }),
+      dateOfBirth: z.string().optional(),
+      email: z
+        .string()
+        .trim()
+        .min(1, "Email is required")
+        .email("{VALUE} is not a valid email"),
+      phoneNo: z
+        .string()
+        .trim()
+        .min(1, "Phone number is required")
+        .max(11, "Phone No can not be more than 11 characters"),
+      emergencyPhoneNo: z
+        .string()
+        .trim()
+        .min(1, "Emergency phone number is required"),
+      bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
+        errorMap: () => ({ message: "Blood group is required" }),
+      }),
+      presentAddress: z.string().trim().min(1, "Present address is required"),
+      permanentAddress: z
+        .string()
+        .trim()
+        .min(1, "Permanent address is required"),
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
+      profileImg: z.string().trim().optional(),
+    }),
   }),
-  dateOfBirth: z.string().optional(),
-  email: z
-    .string()
-    .trim()
-    .min(1, "Email is required")
-    .email("{VALUE} is not a valid email"),
-  phoneNo: z
-    .string()
-    .trim()
-    .min(1, "Phone number is required")
-    .max(11, "Phone No can not be more than 11 characters"),
-  emergencyPhoneNo: z
-    .string()
-    .trim()
-    .min(1, "Emergency phone number is required"),
-  bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
-    errorMap: () => ({ message: "Blood group is required" }),
-  }),
-  presentAddress: z.string().trim().min(1, "Present address is required"),
-  permanentAddress: z.string().trim().min(1, "Permanent address is required"),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImg: z.string().trim().optional(),
-  isDeleted: z.boolean().default(false),
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+  createStudentValidationSchema,
+};
