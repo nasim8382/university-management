@@ -1,7 +1,12 @@
 import { Schema, model } from "mongoose";
-import { TAcademicSemester, TMonths } from "./academicSemester.interface";
+import {
+  TAcademicSemester,
+  TAcademicSemesterCode,
+  TAcademicSemesterName,
+  TMonths,
+} from "./academicSemester.interface";
 
-const months: TMonths[] = [
+const Months: TMonths[] = [
   "January",
   "February",
   "March",
@@ -16,28 +21,38 @@ const months: TMonths[] = [
   "December",
 ];
 
+const AcademicSemesterName: TAcademicSemesterName[] = [
+  "Autumn",
+  "Summer",
+  "Fall",
+];
+
+const AcademicSemesterCode: TAcademicSemesterCode[] = ["01", "02", "03"];
+
 const academicSemesterSchema = new Schema<TAcademicSemester>({
   name: {
     type: String,
-    enum: ["Autumn", "Summer", "Fall"],
-    message: "Name is required",
+    enum: AcademicSemesterName,
+    required: true,
   },
   code: {
     type: String,
-    enum: ["01", "02", "03"],
-    message: "Code is required",
+    enum: AcademicSemesterCode,
+    required: true,
   },
   year: {
     type: Date,
-    required: [true, "Year is required"],
+    required: true,
   },
   startMonth: {
     type: String,
-    enum: months,
+    enum: Months,
+    required: true,
   },
   endMonth: {
     type: String,
-    enum: months,
+    enum: Months,
+    required: true,
   },
 });
 
