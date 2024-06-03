@@ -115,13 +115,13 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     gender: {
       type: String,
       enum: {
-        values: ["male", "female"],
+        values: ["male", "female", "other"],
         message: "{VALUE} is not valid",
       },
       required: [true, "Gender is required"],
     },
     dateOfBirth: {
-      type: String,
+      type: Date,
       required: [true, "Date of birth is required"],
     },
     email: {

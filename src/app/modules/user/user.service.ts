@@ -1,12 +1,12 @@
 import config from "../../config";
 import { TStudent } from "../student/student.interface";
 import { Student } from "../student/student.model";
-import { IUser } from "./user.interface";
+import { TUser } from "./user.interface";
 import { User } from "./user.model";
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   // create a user object
-  const userData: Partial<IUser> = {};
+  const userData: Partial<TUser> = {};
 
   // if password is not given, use default password
   userData.password = password || (config.default_pass as string);
