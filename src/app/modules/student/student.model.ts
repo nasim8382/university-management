@@ -140,7 +140,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       maxlength: [11, "Phone No can not be more than 11 characters"],
       trim: true,
     },
-    emergencyPhoneNo: {
+    emergencyContactNo: {
       type: String,
       required: [true, "Emergency phone number is required"],
       trim: true,
