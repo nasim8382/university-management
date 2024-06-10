@@ -69,7 +69,7 @@ const createStudentValidationSchema = z.object({
         .trim()
         .min(1, "Email is required")
         .email("{VALUE} is not a valid email"),
-      phoneNo: z
+      contactNo: z
         .string()
         .trim()
         .min(1, "Phone number is required")
@@ -90,6 +90,7 @@ const createStudentValidationSchema = z.object({
       localGuardian: localGuardianValidationSchema,
       profileImg: z.string().trim().optional(),
       admissionSemester: z.string(),
+      academicDepartment: z.string(),
     }),
   }),
 });

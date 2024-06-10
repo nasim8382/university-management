@@ -29,7 +29,7 @@ export type TStudent = {
   gender: "male" | "female" | "other";
   dateOfBirth?: Date;
   email: string;
-  phoneNo: string;
+  contactNo: string;
   emergencyPhoneNo: string;
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
   presentAddress: string;
@@ -39,21 +39,8 @@ export type TStudent = {
   profileImg?: string;
   admissionSemester: Types.ObjectId;
   isDeleted: boolean;
+  academicDepartment: Types.ObjectId;
 };
-
-// for instance method
-// export type StudentMethods = {
-//   isStudentExits(id: string): Promise<TStudent | null>;
-// };
-
-// export type StudentModel = Model<Student, {}, StudentMethods>;
-// export type StudentModel = Model<
-//   TStudent,
-//   Record<string, never>,
-//   StudentMethods
-// >;
-
-// for static method
 
 export interface StudentModel extends Model<TStudent> {
   isStudentExits(id: string): Promise<TStudent | null>;

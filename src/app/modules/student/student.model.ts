@@ -106,6 +106,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: Schema.Types.ObjectId,
       required: [true, "User Id is required"],
       ref: "User",
+      unique: true,
     },
     name: {
       type: userNameSchema,
@@ -133,7 +134,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         message: "{VALUE} is not a valid email",
       },
     },
-    phoneNo: {
+    contactNo: {
       type: String,
       required: [true, "Phone number is required"],
       maxlength: [11, "Phone No can not be more than 11 characters"],
@@ -175,6 +176,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicDepartment",
     },
   },
   {
