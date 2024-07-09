@@ -6,8 +6,6 @@ import { User } from "../user/user.model";
 import { TStudent } from "./student.interface";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-  console.log("Base query", query);
-
   const queryObj = { ...query };
 
   // { email: { $regex : query.searchTerm , $options: i } }
@@ -26,9 +24,11 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     })),
   });
 
-  const excludeFields = ["searchTerm", "sort", "limit"];
+  const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
 
   excludeFields.forEach((el) => delete queryObj[el]);
+
+  console.log({ query }, { queryObj });
 
   const filterQuery = searchQuery
     .find(queryObj)
@@ -41,7 +41,6 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     });
 
   let sort = "-createdAt";
-
   if (query.sort) {
     sort = query.sort as string;
   }
@@ -49,14 +48,31 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   const sortQuery = filterQuery.sort(sort);
 
   let limit = 1;
-
   if (query.limit) {
-    limit = query.limit as number;
+    limit = Number(query.limit);
   }
 
-  const limitQuery = await sortQuery.limit(limit);
+  let page = 1;
+  let skip = 0;
 
-  return limitQuery;
+  if (query.page) {
+    page = Number(query.page);
+    skip = (page - 1) * limit;
+  }
+
+  const paginateQuery = sortQuery.skip(skip);
+
+  const limitQuery = paginateQuery.limit(limit);
+
+  // field limiting
+  let fields = "-__v";
+  if (query.fields) {
+    fields = (query.fields as string).split(",").join(" ");
+  }
+
+  const fieldQuery = await limitQuery.select(fields);
+
+  return fieldQuery;
 };
 
 const getSingleStudentFromDB = async (id: string) => {
