@@ -9,7 +9,7 @@ export type TCourse = {
   title: string;
   prefix: string;
   code: number;
-  credits: string;
+  credits: number;
   isDeleted: boolean;
   preRequisiteCourses: [TPreRequisiteCourses];
 };
