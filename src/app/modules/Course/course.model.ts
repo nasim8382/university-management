@@ -40,10 +40,10 @@ const courseSchema = new Schema<TCourse>(
       type: Boolean,
       default: false,
     },
-  },
-  {
-    timestamps: true,
   }
+  // {
+  //   timestamps: true,
+  // }
 );
 
 export const Course = model<TCourse>("Course", courseSchema);
