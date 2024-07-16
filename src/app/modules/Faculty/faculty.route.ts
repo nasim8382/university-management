@@ -5,16 +5,16 @@ import { updateFacultyValidationSchema } from "./faculty.validation";
 
 const router = express.Router();
 
-router.get("/:id", FacultyControllers.getSingleFaculty);
+router.get("/", FacultyControllers.getAllFaculties);
+
+router.get("/:facultyId", FacultyControllers.getSingleFaculty);
 
 router.patch(
-  "/:id",
+  "/:facultyId",
   validateRequest(updateFacultyValidationSchema),
   FacultyControllers.updateFaculty
 );
 
-router.delete("/:id", FacultyControllers.deleteFaculty);
-
-router.get("/", FacultyControllers.getAllFaculties);
+router.delete("/:facultyId", FacultyControllers.deleteFaculty);
 
 export const FacultyRoutes = router;
