@@ -5,7 +5,9 @@ import { SemesterRegistrationServices } from "./semesterRegistration.service";
 
 const createSemesterRegistration = catchAsync(async (req, res) => {
   const result =
-    await SemesterRegistrationServices.createSemesterRegistrationIntoDB();
+    await SemesterRegistrationServices.createSemesterRegistrationIntoDB(
+      req.body
+    );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -17,7 +19,9 @@ const createSemesterRegistration = catchAsync(async (req, res) => {
 
 const getAllSemesterRegistrations = catchAsync(async (req, res) => {
   const result =
-    await SemesterRegistrationServices.createSemesterRegistrationIntoDB();
+    await SemesterRegistrationServices.getAllSemesterRegistrationsFromDB(
+      req.query
+    );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -28,8 +32,12 @@ const getAllSemesterRegistrations = catchAsync(async (req, res) => {
 });
 
 const getSingleSemesterRegistration = catchAsync(async (req, res) => {
+  const { semesterRegistrationId } = req.params;
+
   const result =
-    await SemesterRegistrationServices.createSemesterRegistrationIntoDB();
+    await SemesterRegistrationServices.getSingleSemesterRegistrationFromDB(
+      semesterRegistrationId
+    );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -41,7 +49,7 @@ const getSingleSemesterRegistration = catchAsync(async (req, res) => {
 
 const updateSemesterRegistration = catchAsync(async (req, res) => {
   const result =
-    await SemesterRegistrationServices.createSemesterRegistrationIntoDB();
+    await SemesterRegistrationServices.updateSemesterRegistrationIntoDB();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -51,9 +59,22 @@ const updateSemesterRegistration = catchAsync(async (req, res) => {
   });
 });
 
+const deleteSemesterRegistration = catchAsync(async (req, res) => {
+  const result =
+    await SemesterRegistrationServices.deleteSemesterRegistrationIntoDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Semester Registration is deleted successfully",
+    data: result,
+  });
+});
+
 export const SemesterRegistrationControllers = {
   createSemesterRegistration,
   getAllSemesterRegistrations,
   getSingleSemesterRegistration,
   updateSemesterRegistration,
+  deleteSemesterRegistration,
 };
