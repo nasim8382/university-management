@@ -1,9 +1,15 @@
 import express from "express";
 import { offeredCourseServices } from "./offeredCourse.service";
+import validateRequest from "../../middlewares/validateRequest";
+import { offeredCourseValidations } from "./offeredCourse.validation";
 
 const router = express.Router();
 
-router.post("/", offeredCourseServices.createOfferedCourseIntoDB);
+router.post(
+  "/",
+  validateRequest(offeredCourseValidations.createOfferedCourseValidationSchema),
+  offeredCourseServices.createOfferedCourseIntoDB
+);
 
 router.get("/", offeredCourseServices.getAllOfferedCoursesFromDB);
 
